@@ -69,6 +69,12 @@ class MyCommands:
             else:
                 result += char
         await self.bot.edit_message(ctx.message, result)
+        
+    @commands.command(pass_context=True)    
+    async def channel(self, ctx):
+        await self.bot.delete_message(ctx.message)
+        embed = discord.Embed(description="You seem to be in <#{}>.".format(ctx.message.channel.id))
+        await self.bot.say("", embed=embed)    
                        
 def setup(bot):
     bot.add_cog(MyCommands(bot))
