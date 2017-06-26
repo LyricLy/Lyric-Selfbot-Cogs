@@ -13,7 +13,7 @@ from discord.ext import commands
 codes = requests.get("http://lyricly.tk/langs.json").text
 lang_codes = json.loads(codes)
 
-class MyCommands:
+class LyricCommands:
 
     def __init__(self, bot):
         self.bot = bot
@@ -77,4 +77,4 @@ class MyCommands:
         await self.bot.say("", embed=embed)    
                        
 def setup(bot):
-    bot.add_cog(MyCommands(bot))
+    bot.add_cog(LyricCommands(bot))
