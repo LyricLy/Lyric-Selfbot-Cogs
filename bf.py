@@ -21,9 +21,9 @@ class BrainF:
             elif i == "]":
                 count -= 1
             if count < 0:
-                raise SyntaxError("unmatched brackets in program")
+                await self.bot.send_message(ctx.message.channel, self.bot.bot_prefix + "There are unmatched brackets in this program.")
         if count != 0: 
-            raise SyntaxError("unmatched brackets in program")
+            await self.bot.send_message(ctx.message.channel, self.bot.bot_prefix + "There are unmatched brackets in this program.")
             
         # initialize variables 
         cells = [0]
