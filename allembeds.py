@@ -16,7 +16,7 @@ class AllEmbeds:
         await self.bot.send_message(ctx.message.channel, self.bot.bot_prefix + "Successfully toggled turning all messages to embeds!")
         
     async def on_message(self, message):
-        if message.author == bot.user:
+        if message.author == self.bot.user:
             if not message.embeds and self.enabled:
                 await self.bot.edit_message(message, " ", embed=discord.Embed(description=message.content))
 
