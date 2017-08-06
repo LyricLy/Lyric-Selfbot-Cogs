@@ -440,7 +440,7 @@ class Ly:
             output += "... (time limit hit, output truncated)"
         if debug:
             self.output += "\nTotal output: " + self.total_output
-        await self.bot.send_message("```\n" + self.output + "```")
+        await self.bot.send_message(ctx.message.channel, "```\n" + self.output + "```")
 
 def setup(bot):
     bot.add_cog(Ly(bot))
