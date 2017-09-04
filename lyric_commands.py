@@ -69,8 +69,7 @@ class LyricCommands:
     @commands.command(pass_context=True)    
     async def whereami(self, ctx):
         await ctx.message.delete()
-        embed = discord.Embed(description="You seem to be in {}.".format(ctx.message.channel.mention))
-        await ctx.send(embed=embed)
+        await ctx.send(self.bot.bot_prefix + "You seem to be in {}.".format(ctx.message.channel.mention))    
                        
 def setup(bot):
     bot.add_cog(LyricCommands(bot))
