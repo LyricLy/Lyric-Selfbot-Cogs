@@ -67,7 +67,7 @@ class LyricCommands:
         await ctx.message.edit(content=result)
         
     @commands.command(pass_context=True)    
-    async def channel(self, ctx):
+    async def whereami(self, ctx):
         await ctx.message.delete()
         await ctx.send(self.bot.bot_prefix + "You seem to be in {}.".format(ctx.message.channel.mention))    
                        
