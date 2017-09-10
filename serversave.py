@@ -32,12 +32,12 @@ class ServerSave:
         
         Saved servers can be loaded with the >serverload command (>help serverload for more information)
         """
-	if server:
-	    ctx.guild = self.bot.get_guild(int(server))
-	    if not ctx.guild:
-	        return await ctx.send(self.bot.bot_prefix + "That server couldn't be found.")
-	
-	await ctx.send(self.bot.bot_prefix + "Saving server...")
+        if server:
+            ctx.guild = self.bot.get_guild(int(server))
+        if not ctx.guild:
+            return await ctx.send(self.bot.bot_prefix + "That server couldn't be found.")
+
+	    await ctx.send(self.bot.bot_prefix + "Saving server...")
         
         if not os.path.exists("server_save"):
             os.makedirs("server_save")
