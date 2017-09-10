@@ -14,7 +14,7 @@ class ServerSave:
         self.bot = bot
 		
     @commands.command(pass_context=True)
-    async def serversave(self, ctx):
+    async def serversave(self, ctx, *, server=""):
         """Save an entire server! WHAT?!
         Saves the details of a server:
         - name
@@ -28,11 +28,16 @@ class ServerSave:
         - verification level
         - channels
         
-        >serversave - Save the current server to a file in the server_save folder.
+        >serversave [server] - Save the specified server (defaults to the current server) to a file in the server_save folder.
         
         Saved servers can be loaded with the >serverload command (>help serverload for more information)
         """
-        await ctx.send(self.bot.bot_prefix + "Saving server... (this may take a few minutes)")
+	if server:
+	    ctx.guild = self.bot.get_guild(int(server))
+	    if not ctx.guild:
+	        return await ctx.send(self.bot.bot_prefix + "That server couldn't be found.")
+	
+	await ctx.send(self.bot.bot_prefix + "Saving server...")
         
         if not os.path.exists("server_save"):
             os.makedirs("server_save")
