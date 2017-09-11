@@ -123,7 +123,7 @@ class ServerSave:
         with open(filename, "w+") as f:
             json.dump(saved_guild, f)
             
-        await ctx.send(self.bot.bot_prefix + "Successfully saved current server to " + filename + "!")
+        await ctx.send(self.bot.bot_prefix + "Successfully saved `{}` to `{}`!".format(ctx.guild.name, filename))
         
     @commands.command(pass_context=True)
     @commands.has_permissions(administrator=True)
