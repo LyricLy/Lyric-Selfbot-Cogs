@@ -37,7 +37,7 @@ class ServerSave:
         if not ctx.guild:
             return await ctx.send(self.bot.bot_prefix + "That server couldn't be found.")
 
-	    await ctx.send(self.bot.bot_prefix + "Saving server...")
+        await ctx.send(self.bot.bot_prefix + "Saving server `{}`...".format(ctx.guild.name))
         
         if not os.path.exists("server_save"):
             os.makedirs("server_save")
