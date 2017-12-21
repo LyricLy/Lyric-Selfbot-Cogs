@@ -27,6 +27,7 @@ class ServerSave:
         - 2FA level
         - verification level
         - channels
+	- categories
         
         >serversave [server] - Save the specified server (defaults to the current server) to a file in the server_save folder.
         
@@ -102,12 +103,8 @@ class ServerSave:
                 "position": channel.position,
                 "nsfw": channel.is_nsfw(),
                 "overwrites": [],
-                "category": None
+                "category": channel.category.name if channel.category else None
             }
-            try:
-                channel_dict["category"] = channel.category.name
-            except:
-                pass
             for overwrite in channel.overwrites:
                 overwrite_dict = {
                     "name": overwrite[0].name,
@@ -126,7 +123,7 @@ class ServerSave:
                 "user_limit": channel.user_limit,
                 "bitrate": channel.bitrate,
                 "overwrites": [],
-                "category": None
+                "category": channel.category.name if channel.category else None
             }
             try:
                 channel_dict["category"] = channel.category.name
@@ -312,7 +309,7 @@ class ServerSave:
                     new_chan = await ctx.guild.create_voice_channel(channel["name"], overwrites=dict(overwrites), reason="Loading saved server")
                     try:
                         await new_chan.edit(bitrate=channel["bitrate"], user_limit=channel["user_limit"], category=category, reason="Loading saved server")
-                    except:
+                    except discord.errors.HTTPException:
                         await new_chan.edit(bitrate=96000, user_limit=channel["user_limit"], category=category, reason="Loading saved server")
                 
         print("Loading emotes...")       
