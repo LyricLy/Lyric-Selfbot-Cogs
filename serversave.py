@@ -29,9 +29,9 @@ class ServerSave:
         - channels
 	- categories
         
-        >serversave [server] - Save the specified server (defaults to the current server) to a file in the server_save folder.
+        [p]serversave [server] - Save the specified server (defaults to the current server) to a file in the server_save folder.
         
-        Saved servers can be loaded with the >serverload command (>help serverload for more information)
+        Saved servers can be loaded with the [p]serverload command ([p]help serverload for more information)
         """
         if server:
             ctx.guild = self.bot.get_guild(int(server))
@@ -160,8 +160,8 @@ class ServerSave:
         """Load an entire server?!?!?!??!
         Loads in the saved data from a previously saved server.
         Usage:
-        >serverload - Attempt to find a save of the current server and load it.
-        >serverload <filename> - Find a saved server by filename (if a whole filename is not given, the latest save from all of the filenames that contain the given filename is used)
+        [p]serverload - Attempt to find a save of the current server and load it.
+        [p]serverload <filename> - Find a saved server by filename (if a whole filename is not given, the latest save from all of the filenames that contain the given filename is used)
         """
         if not os.path.exists("server_save") or not os.listdir("server_save"):
             return await ctx.send(self.bot.bot_prefix + "You have no servers saved!")
