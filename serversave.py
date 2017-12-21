@@ -307,10 +307,7 @@ class ServerSave:
                         await channel_obj.set_permissions(overwrite, overwrite=overwrites_dict[overwrite], reason="Loading saved server")
                 else:
                     new_chan = await ctx.guild.create_voice_channel(channel["name"], overwrites=dict(overwrites), reason="Loading saved server")
-                    try:
-                        await new_chan.edit(bitrate=channel["bitrate"], user_limit=channel["user_limit"], category=category, reason="Loading saved server")
-                    except discord.errors.HTTPException:
-                        await new_chan.edit(bitrate=96000, user_limit=channel["user_limit"], category=category, reason="Loading saved server")
+                    await new_chan.edit(bitrate=channel["bitrate"] if channel["bitrate"] <= 96000 else 96000, user_limit=channel["user_limit"], category=category, reason="Loading saved server")
                 
         print("Loading emotes...")       
               
