@@ -155,7 +155,7 @@ class ServerSave:
         await ctx.send(self.bot.bot_prefix + "Successfully saved `{}` to `{}`!".format(ctx.guild.name, filename))
         
     @commands.command(pass_context=True)
-    @commands.has_permissions(administrator=True)
+    @commands.is_owner()
     async def serverload(self, ctx, server=":"):  # filenames cannot contain : so I'm using this as a workaround to make it only use the current server ID if no server is given
         """Load an entire server?!?!?!??!
         Loads in the saved data from a previously saved server.
