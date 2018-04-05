@@ -155,7 +155,7 @@ class ServerSave:
         await ctx.send(self.bot.bot_prefix + "Successfully saved `{}` to `{}`!".format(ctx.guild.name, filename))
         
     @commands.command(pass_context=True)
-    @commands.is_owner()
+    @commands.has_permissions(administrator=True)
     async def serverload(self, ctx, server=":"):  # filenames cannot contain : so I'm using this as a workaround to make it only use the current server ID if no server is given
         """Load an entire server?!?!?!??!
         Loads in the saved data from a previously saved server.
@@ -312,11 +312,8 @@ class ServerSave:
         print("Loading emotes...")       
               
         for emoji in ctx.guild.emojis:
-            if emoji.name not in [x["name"] for x in g["emojis"]]:
-                await emoji.delete(reason="Loading saved server")
+            await emoji.delete(reason="Loading saved server")
         for emoji in g["emojis"]:
-            if emoji["name"] in [x.name for x in ctx.guild.emojis]:
-                await [x for x in ctx.guild.emojis if x.name == emoji["name"]][0].delete(reason="Loading saved server")
             await ctx.guild.create_custom_emoji(name=emoji["name"], image=requests.get(emoji["url"]).content, reason="Loaded saved server")
                 
         print("Positioning channels and roles...")
@@ -328,6 +325,9 @@ class ServerSave:
         for channel in g["voice_channels"]:
             await [x for x in ctx.guild.voice_channels if x.name == channel["name"]][0].edit(position=channel["position"] if channel["position"] < len(ctx.guild.voice_channels) else len(ctx.guild.voice_channels) - 1)
             
+        for category in g["categories"]:
+            await [x for x in ctx.guild.categories if x.name == category["name"]][0].edit(position=category["position"] if category["position"] < len(ctx.guild.categories) else len(ctx.guild.categories) - 1)
+            
         for role in g["roles"]:
             if role["name"] != "@everyone":
                 await [x for x in ctx.guild.roles if x.name == role["name"]][0].edit(position=role["position"] if role["position"] < len(ctx.guild.roles) else len(ctx.guild.roles) - 1)
@@ -337,6 +337,7 @@ class ServerSave:
         await ctx.guild.edit(name=g["name"], icon=requests.get(g["icon"].rsplit(".", 1)[0] + ".png").content if g["icon"] else None, region=discord.VoiceRegion(g["region"]), afk_channel=[x for x in ctx.guild.voice_channels if x.name == g["afk_channel"]][0] if g["afk_channel"] else None, afk_timeout=g["afk_timeout"], verification_level=discord.VerificationLevel(g["verification_level"]), reason="Loading saved server")
         
         print("Finished loading server backup!")
+        await ctx.send(self.bot.bot_prefix + "Finished loading.")
 
 def setup(bot):
     bot.add_cog(ServerSave(bot))
