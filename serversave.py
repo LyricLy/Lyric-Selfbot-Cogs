@@ -275,39 +275,38 @@ class ServerSave:
             if channel.name not in [x["name"] for x in g["voice_channels"]]:
                 await channel.delete(reason="Loading saved server")
         for channel in g["voice_channels"]:
-            if channel["name"] not in [x.name for x in ctx.guild.voice_channels]:
-                overwrites = []
-                category = None
-                try:
-                    category = [x for x in ctx.guild.categories if x.name == channel["category"]][0]
-                except:
-                    pass
-                for overwrite in channel["overwrites"]:
-                    if overwrite["type"] == "role":
-                        if overwrite["name"] not in [x.name for x in ctx.guild.roles]:
-                            pass
-                        else:
-                            role = [x for x in ctx.guild.roles if x.name == overwrite["name"]][0]
-                            permissions = discord.PermissionOverwrite()
-                            permissions.update(**dict(overwrite["permissions"]))
-                            overwrites.append((role, permissions))
+            overwrites = []
+            category = None
+            try:
+                category = [x for x in ctx.guild.categories if x.name == channel["category"]][0]
+            except:
+                pass
+            for overwrite in channel["overwrites"]:
+                if overwrite["type"] == "role":
+                    if overwrite["name"] not in [x.name for x in ctx.guild.roles]:
+                        pass
                     else:
-                        if overwrite["name"] not in [x.name for x in ctx.guild.members]:
-                            pass
-                        else:
-                            members = [x for x in ctx.guild.members if x.name == overwrite["name"]][0]
-                            permissions = discord.PermissionOverwrite()
-                            permissions.update(**dict(overwrite["permissions"]))
-                            overwrites.append((member, permissions))
-                if channel["name"] in [x.name for x in ctx.guild.voice_channels]:
-                    channel_obj = [x for x in ctx.guild.voice_channels if x.name == channel["name"]][0]
-                    await channel_obj.edit(name=channel["name"], topic=channel["topic"], category=category, reason="Loading saved server")
-                    overwrites_dict = dict(overwrites)
-                    for overwrite in overwrites_dict:
-                        await channel_obj.set_permissions(overwrite, overwrite=overwrites_dict[overwrite], reason="Loading saved server")
+                        role = [x for x in ctx.guild.roles if x.name == overwrite["name"]][0]
+                        permissions = discord.PermissionOverwrite()
+                        permissions.update(**dict(overwrite["permissions"]))
+                        overwrites.append((role, permissions))
                 else:
-                    new_chan = await ctx.guild.create_voice_channel(channel["name"], overwrites=dict(overwrites), reason="Loading saved server")
-                    await new_chan.edit(bitrate=channel["bitrate"] if channel["bitrate"] <= 96000 else 96000, user_limit=channel["user_limit"], category=category, reason="Loading saved server")
+                    if overwrite["name"] not in [x.name for x in ctx.guild.members]:
+                        pass
+                    else:
+                        members = [x for x in ctx.guild.members if x.name == overwrite["name"]][0]
+                        permissions = discord.PermissionOverwrite()
+                        permissions.update(**dict(overwrite["permissions"]))
+                        overwrites.append((member, permissions))
+            if channel["name"] in [x.name for x in ctx.guild.voice_channels]:
+                channel_obj = [x for x in ctx.guild.voice_channels if x.name == channel["name"]][0]
+                await channel_obj.edit(name=channel["name"], topic=channel["topic"], category=category, reason="Loading saved server")
+                overwrites_dict = dict(overwrites)
+                for overwrite in overwrites_dict:
+                    await channel_obj.set_permissions(overwrite, overwrite=overwrites_dict[overwrite], reason="Loading saved server")
+            else:
+                new_chan = await ctx.guild.create_voice_channel(channel["name"], overwrites=dict(overwrites), reason="Loading saved server")
+                await new_chan.edit(bitrate=channel["bitrate"] if channel["bitrate"] <= 96000 else 96000, user_limit=channel["user_limit"], category=category, reason="Loading saved server")
                 
         print("Loading emotes...")       
               
